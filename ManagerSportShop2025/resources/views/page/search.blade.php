@@ -14,7 +14,6 @@
 							</div>
 
 							<div class="row">
-                            @if(request()->has('key'))
 								@foreach($product as $pr)
 								<div class="col-sm-3">
 									<div class="single-item">
@@ -39,11 +38,6 @@
 								<br>
 								@endforeach
 							</div>
-
-                            @else{
-                                <p>Sản phẩm bạn cần tìm không tồn tại !</p>
-                            }
-                            @endif
 						</div> 
 
 						<div class="space50">&nbsp;</div>
