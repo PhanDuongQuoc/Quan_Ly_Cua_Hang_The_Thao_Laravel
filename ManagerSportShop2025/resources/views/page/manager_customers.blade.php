@@ -22,7 +22,23 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
-            
+            <div class="d-flex align-items-center gap-2">
+                <form action="{{ route('manager_customers.search') }}" method="GET" class="d-flex">
+                    <div class="input-group" style="max-width: 300px;">
+                        <input type="text" name="query" class="form-control form-control-sm" placeholder="Tìm kiếm..." value="{{ request('query') }}" required>
+                        <button type="submit" class="btn btn-sm btn-primary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+
+                @if(request()->has('query'))
+                    <a href="{{ route('manager_customers') }}" class="btn btn-sm btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Quay lại
+                    </a>
+                @endif
+            </div>
+            <br>
             <table class="table table-hover table-bordered align-middle">
                 <thead class="table-dark">
                     <tr>

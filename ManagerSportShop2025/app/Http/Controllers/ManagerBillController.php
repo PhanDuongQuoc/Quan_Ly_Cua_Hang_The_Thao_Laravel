@@ -9,28 +9,24 @@ use App\Models\billdetail;
 
 class ManagerBillController extends Controller
 {
-    // Hiển thị danh sách hóa đơn
     public function listBill()
     {
         $bills = bills::with('bill_detail', 'bill')->get();
         return view('page.manager_bill_list', compact('bills'));
     }
 
-    // Hiển thị chi tiết hóa đơn
     public function show($id)
     {
         $bill = Bills::with('bill_detail', 'bill')->findOrFail($id);
         return view('page.manager_bill_show', compact('bill'));
     }
 
-    // Hiển thị form thêm hóa đơn mới
     public function create()
     {
         $customers = customer::all();
         return view('page.manager_bill_create', compact('customers'));
     }
 
-    // Lưu hóa đơn mới vào database
     public function store(Request $request)
     {
         $request->validate([
@@ -52,7 +48,6 @@ class ManagerBillController extends Controller
         return redirect()->route('manager_bills')->with('success', 'Thêm hóa đơn thành công!');
     }
 
-    // Hiển thị form chỉnh sửa hóa đơn
     public function edit($id)
     {
         $bill = bills::findOrFail($id);
@@ -60,7 +55,6 @@ class ManagerBillController extends Controller
         return view('page.manager_bill_edit', compact('bill', 'customers'));
     }
 
-    // Cập nhật hóa đơn
     public function update(Request $request, $id)
     {
         $request->validate([

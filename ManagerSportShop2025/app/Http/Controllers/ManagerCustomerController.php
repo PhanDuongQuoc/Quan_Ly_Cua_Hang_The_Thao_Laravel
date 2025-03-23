@@ -77,4 +77,15 @@ class ManagerCustomerController extends Controller {
         $customer->delete();
         return redirect()->route('manager_customers')->with('success', 'Xóa khách hàng thành công!');
     }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        $customers = Customer::where('name', 'LIKE', "%$query%")
+            ->orWhere('email', 'LIKE', "%$query%")
+            ->paginate(5);
+
+        return view('page.manager_customers', compact('customers'));
+    }
 }

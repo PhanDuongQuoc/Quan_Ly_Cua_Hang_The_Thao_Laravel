@@ -89,4 +89,15 @@ class ManagerProductController extends Controller{
             $product->delete();
             return redirect()->route('manager_products')->with('success', 'Xóa sản phẩm thành công!');
         }
+
+        public function search(Request $request)
+        {
+            $query = $request->input('query');
+
+            $products = product::where('name', 'LIKE', "%$query%")
+                ->orWhere('description', 'LIKE', "%$query%")
+                ->paginate(5);
+
+            return view('page.manager_products', compact('products'));
+        }
 }
