@@ -17,6 +17,8 @@ use App\Http\Controllers\ManagerVideoController;
 use App\Http\Controllers\ManagerBillController;
 use App\Http\Controllers\ManagerBillDetailController;
 use App\Http\Controllers\ManagerBillStatisticsController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\Comment_repliesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +43,8 @@ Route::get('/trangchu',
 Route::get('/sanpham',
 [PageController::class,'getSanPham'])->name('san-pham');
 
+Route::get('/comment', 
+[CommentController::class, 'showComment'])->name('comment');
 
 
 Route::get('/sanphamtheoloai/{type}',
@@ -209,3 +213,17 @@ Route::delete('/manager_bill_details/{id}', [ManagerBillDetailController::class,
 
 
 Route::get('/manager_bills/statistics', [ManagerBillStatisticsController::class, 'index'])->name('manager_bills.statistics');
+
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
+});
+
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/comment_reps', [Comment_repliesController::class, 'store'])->name('comment_reps.store');
+    Route::delete('/comment_reps/{id}', [Comment_repliesController::class, 'destroy'])->name('comment_reps.destroy');
+});

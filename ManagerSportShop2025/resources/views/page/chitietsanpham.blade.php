@@ -59,16 +59,15 @@
 					<div class="woocommerce-tabs">
 						<ul class="tabs">
 							<li><a href="#tab-description">Mô tả</a></li>
-							<li><a href="#tab-reviews">Lượt xem (0)</a></li>
+							<li><a href="#tab-reviews">Bình luận ({{count($product->comments)}})</a></li>
 						</ul>
+						
 
 						<div class="panel" id="tab-description">
 							<p>{{$product -> description}}</p>
 						</div>
-						<div class="panel" id="tab-reviews">
-							<p>Không có lượt xem nào </p>
-						</div>
 					</div>
+					
 					<div class="space50">&nbsp;</div>
 					<div class="beta-products-list">
 						<h4>Sản phẩm liên quan</h4>
@@ -94,12 +93,16 @@
 								</div>
 							</div>
 							@endforeach
-							<div style="text-align:center;" class="row d-flex justify-content-center">
+						</div>
+						<div style="text-align:center;" class="row d-flex justify-content-center">
 								{{ $product_relate->appends(['product_new' => request('product_new')])->links('pagination::bootstrap-4') }}
 							</div>
-						</div>
 					</div> <!-- .beta-products-list -->
+					
 				</div>
+
+
+				
 				<div class="col-sm-3 aside">
 					<div class="widget">
 						<h3 class="widget-title">Bán chạy nhất</h3>
@@ -118,7 +121,7 @@
 							</div>
 					
 						</div>
-					</div> <!-- best sellers widget -->
+					</div> 
 					<div class="widget">
 						<h3 class="widget-title">Sản phẩm mới nhất</h3>
 						<div class="widget-body">
@@ -141,10 +144,128 @@
 								</div>
 							</div>
 						</div>
-					</div> <!-- best sellers widget -->
+					</div>
+
+				</div>
+				
+			</div>
+			<div class="panel" id="tab-reviews">
+				<h3 class="widget-title">Viết đánh giá {{$product -> name}}</h3>
+				<br>
+				<br>
+				<div class="card mb-4 shadow-sm">
+
+				<div class="comments-section">
+
+
+						<div class="comment-list">
+							@if($product->comments->isEmpty())
+								<p class="text-muted">Chưa có bình luận nào. Hãy là người đầu tiên bình luận!</p>
+							@else
+								@foreach($product->comments as $comment)
+									<div class="comment-box">
+										<strong>{{ $comment->user->full_name ?? 'Ẩn danh' }}</strong>
+										@if($comment->user->id === 1)
+											<span class="badge bg-warning text-dark">ADMINISTRATOR</span>
+										@else
+											<span class="badge bg-warning text-dark">USER</span>
+										@endif
+										<p class="text-muted small">{{ $comment->created_at->diffForHumans() }}</p>
+										<p>{{ $comment->content }}</p>
+
+										<!-- Nút trả lời -->
+										<div class="comment-actions">
+											<a href="#" class="text-primary reply-btn" data-comment-id="{{ $comment->id }}">Trả lời</a>
+
+											@if(Auth::check() && Auth::id() === $comment->user_id)
+												<form action="{{ route('comments.destroy', $comment->id) }}" method="POST" class="d-inline">
+													@csrf
+													@method('DELETE')
+													<button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+												</form>
+											@endif
+										</div>
+
+										<!-- Form trả lời bình luận -->
+										<div class="reply-form" id="reply-form-{{ $comment->id }}" style="display: none; margin-top: 10px;">
+											<form action="{{ route('comment_reps.store') }}" method="POST">
+												@csrf
+												<input type="hidden" name="comment_id" value="{{ $comment->id }}">
+												<div class="mb-3">
+													<textarea name="content" class="form-control" rows="2" placeholder="Nhập câu trả lời..." required></textarea>
+												</div>
+												<button type="submit" class="btn btn-sm btn-primary">Gửi phản hồi</button>
+											</form>
+										</div>
+
+										<!-- Hiển thị danh sách trả lời -->
+										<div class="reply-list" style="margin-left: 30px;">
+											@foreach($comment->replies as $reply)
+												<div class="reply-box">
+													<strong>{{ $reply->user->full_name ?? 'Người dùng ẩn danh' }}</strong>
+													@if($reply->user->id === 1)
+														<span class="badge bg-warning text-dark">ADMINISTRATOR</span>
+													@else
+														<span class="badge bg-warning text-dark">USER</span>
+													@endif
+													<p class="text-muted small">{{ $reply->created_at->diffForHumans() }}</p>
+													<p>{{ $reply->content }}</p>
+
+													@if(Auth::check() && Auth::id() === $reply->user_id)
+														<form action="{{ route('comment_reps.destroy', $reply->id) }}" method="POST" class="d-inline">
+															@csrf
+															@method('DELETE')
+															<button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+														</form>
+													@endif
+												</div>
+											@endforeach
+										</div>
+									</div>
+								@endforeach
+							@endif
+						</div>
+
+						<br>
+						<div class="comment-form">
+							<form action="{{ route('comments.store') }}" method="POST">
+								@csrf
+								<input type="hidden" name="product_id" value="{{ $product->id }}">
+								<div class="mb-3">
+									<textarea name="content" class="form-control" rows="3" placeholder="Nhập bình luận..." required></textarea>
+								</div>
+								<br>
+								<button style="background-color:red; border:1px solid red" type="submit" class="btn btn-primary">Gửi</button>
+							</form>
+						</div>
+
+						
+					</div>
 
 				</div>
 			</div>
 		</div> <!-- #content -->
 	</div> <!-- .container -->
+	
+
+	<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".reply-btn").forEach(function (btn) {
+            btn.addEventListener("click", function (event) {
+                event.preventDefault(); // Ngăn chặn link nhảy trang
+
+                let commentId = this.getAttribute("data-comment-id");
+                let replyForm = document.getElementById("reply-form-" + commentId);
+
+                if (replyForm.style.display === "none" || replyForm.style.display === "") {
+                    replyForm.style.display = "block";
+                } else {
+                    replyForm.style.display = "none";
+                }
+            });
+        });
+    });
+</script>
+
+
 @endsection

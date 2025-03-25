@@ -9,14 +9,12 @@ use App\Models\product;
 
 class ManagerBillDetailController extends Controller
 {
-    // Hiển thị danh sách chi tiết hóa đơn
     public function listBillDetails()
     {
         $billDetails = billdetail::with(['bill', 'product'])->get();
         return view('page.manager_bill_detail_list', compact('billDetails'));
     }
 
-    // Hiển thị form thêm mới
     public function create()
     {
         $bills = bills::all();
@@ -24,7 +22,6 @@ class ManagerBillDetailController extends Controller
         return view('page.manager_bill_detail_create', compact('bills', 'products'));
     }
 
-    // Xử lý lưu chi tiết hóa đơn mới
     public function store(Request $request)
     {
         $request->validate([

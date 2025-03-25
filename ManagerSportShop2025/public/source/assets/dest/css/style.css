@@ -5244,3 +5244,70 @@ border:none;}
     outline: none;
     box-shadow: none;
 }
+
+
+
+/* Căn chỉnh bình luận */
+.comment-box {
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    position: relative;
+}
+
+/* Căn chỉnh chữ mạnh hơn */
+.comment-box strong {
+    font-size: 16px;
+    color: #333;
+}
+
+/* Hiển thị ADMIN nổi bật */
+.badge.bg-warning {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 5px;
+}
+
+/* Căn chỉnh ngày giờ */
+.comment-box .text-muted {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+/* Căn chỉnh phần "Trả lời" và "Xóa" trên cùng một hàng */
+.comment-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+/* Nút "Trả lời" */
+.comment-actions .reply-btn {
+    color: #007bff;
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.comment-actions .reply-btn:hover {
+    text-decoration: underline;
+}
+
+/* Nút "Xóa" */
+.comment-actions form {
+    margin: 0;
+}
+
+.comment-actions .btn-danger {
+    padding: 4px 10px;
+    font-size: 13px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.comment-actions .btn-danger:hover {
+    background: darkred;
+}

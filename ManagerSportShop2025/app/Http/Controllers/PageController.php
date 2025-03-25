@@ -149,10 +149,12 @@ class PageController extends Controller
 
     public function getSearch(Request $req){
         $product = product::where('name', 'LIKE', '%'.$req->key.'%')
-            ->orWhere('unit_price', 'LIKE', '%'.$req->key.'%')
-            ->orWhere('description', 'LIKE', '%'.$req->key.'%')
-            ->paginate(6); 
-        
+                ->orWhere('unit_price', 'LIKE', '%'.$req->key.'%')
+                ->orWhere('description', 'LIKE', '%'.$req->key.'%')
+                ->paginate(6); 
+
+
+       
         return view('page.search', compact('product'));
     }
 
