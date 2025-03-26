@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 	<title>Cửa hàng chuyên cung cấp đồ thể thao Future CEO Sport </title>
 	<base href="{{asset('')}}">
 	<link href='http://fonts.googleapis.com/css?family=Dosis:300,400' rel='stylesheet' type='text/css'>
@@ -23,9 +24,25 @@
     @include('header')
 	<div class="rev-slider">
         @yield('content')
+    
+			
 	</div> <!-- .container -->
     @include('footer')
 	@include('contact')
+
+	<div id="chat-box">
+    <h4>Hỗ trợ khách hàng</h4>
+    <div class="chat">
+        <div id="messages">
+            
+        </div>
+        <br>
+        <input type="text" id="message-input" placeholder="Nhập tin nhắn...">
+        <button onclick="sendMessage()">Gửi</button>
+        <button onclick="closeChat()">Đóng</button>
+    </div>
+</div>
+
 
 
 
@@ -46,15 +63,58 @@
 	<!--customjs-->
 	<script src="source/assets/dest/js/custom2.js"></script>
 	<script>
-	$(document).ready(function($) {    
-		$(window).scroll(function(){
-			if($(this).scrollTop()>150){
-			$(".header-bottom").addClass('fixNav')
-			}else{
-				$(".header-bottom").removeClass('fixNav')
-			}}
-		)
-	})
+		$(document).ready(function() {    
+			$(window).scroll(function(){
+				if($(this).scrollTop() > 150){
+					$(".header-bottom").addClass('fixNav');
+				} else {
+					$(".header-bottom").removeClass('fixNav');
+				}
+			});
+		});
+
+		let receiverId = null;
+
+		function openChat(id) {
+			receiverId = id;
+			document.getElementById('chat-box').style.display = 'block';
+			loadMessages();
+		}
+
+		function closeChat() {
+			document.getElementById('chat-box').style.display = 'none';
+		}
+
+		async function loadMessages() {
+		if (!receiverId) {
+			console.error("Không có receiverId, không thể tải tin nhắn!");
+			return;
+		}
+
+		try {
+			let response = await fetch(`/messages/${receiverId}`, { method: "GET" });
+
+			if (!response.ok) {
+				throw new Error(`Lỗi HTTP: ${response.status}`);
+			}
+
+			let messages = await response.json();
+			let messageBox = document.getElementById("messages");
+			messageBox.innerHTML = ""; // Xóa nội dung cũ trước khi load mới
+
+			messages.forEach(msg => {
+				let messageDiv = document.createElement("div");
+				messageDiv.classList.add(msg.sender_id == receiverId ? "user-message" : "admin-message");
+				messageDiv.textContent = msg.message;
+				messageBox.appendChild(messageDiv);
+			});
+
+			messageBox.scrollTop = messageBox.scrollHeight;
+		} catch (error) {
+			console.error("Lỗi khi tải tin nhắn:", error);
+		}
+	}
+
 	</script>
 </body>
 </html>

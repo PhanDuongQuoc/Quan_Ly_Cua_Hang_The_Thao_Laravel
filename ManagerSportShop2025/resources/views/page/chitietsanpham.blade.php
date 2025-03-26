@@ -194,8 +194,10 @@
 												<div class="mb-3">
 													<textarea name="content" class="form-control" rows="2" placeholder="Nhập câu trả lời..." required></textarea>
 												</div>
-												<button type="submit" class="btn btn-sm btn-primary">Gửi phản hồi</button>
+												<br>
+												<button style="background-color:red; border: 1px solid red;" type="submit" class="btn btn-sm btn-primary">Gửi</button>
 											</form>
+
 										</div>
 
 										<!-- Hiển thị danh sách trả lời -->

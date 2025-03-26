@@ -158,6 +158,10 @@ class PageController extends Controller
         return view('page.search', compact('product'));
     }
 
+
+
+    
+
     
     
 }

@@ -12,7 +12,6 @@
 					<ul class="top-details menu-beta l-inline">
 						@if(Auth::check())  
 							<li><a href="{{ route('trang-chu') }}"><i class="fa fa-user"></i> Xin chào, {{ Auth::user()->full_name }}</a></li>
-
 							@if(Auth::user()->hasRole('admin')) 
 								<li><a href="{{route('dashboard')}}">Dashboard</a></li> 
 							@endif
@@ -126,9 +125,17 @@
 						<li><a href="{{ route('gioi-thieu') }}">Giới thiệu</a></li>
 						<li><a href="{{ route('lien-he') }}">Liên hệ</a></li>
 						<li><a href="{{ route('video') }}">Video</a></li>
+						@if(Auth::check())
+						<li><a href="{{ route('historyorder') }}">Lịch sử mua hàng</a></li>
+						@endif
 					</ul>
 					<div class="clearfix"></div>
 				</nav>
 			</div> <!-- .container -->
 		</div> <!-- .header-bottom -->
 	</div> <!-- #header -->
+
+
+
+
+	

@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\AuthController;
@@ -7,7 +7,6 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ManagerProductController;
 use App\Http\Controllers\ManagerTypeProductController;
 use App\Http\Controllers\ManagerNewsController;
-
 use App\Http\Controllers\ManagerRoleController;
 use App\Http\Controllers\ManagerUserController;
 use App\Http\Controllers\ManagerUserRoleController;
@@ -19,6 +18,7 @@ use App\Http\Controllers\ManagerBillDetailController;
 use App\Http\Controllers\ManagerBillStatisticsController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Comment_repliesController;
+use App\Http\Controllers\HistoryOrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +38,9 @@ Route::get('/', function () {
 
 Route::get('/trangchu', 
 [PageController::class, 'getIndex'])->name('trang-chu');
+
+
+
 
 
 Route::get('/sanpham',
@@ -62,6 +65,12 @@ Route::get('/lienhe',
 
 Route::get('/gioithieu',
 [PageController::class,'getGioiThieu'])->name('gioi-thieu');
+
+
+
+Route::get('/historyorder',
+[HistoryOrderController::class,'getHistoryOrder'])->name('historyorder');
+
 
 
 Route::get('/video',
@@ -227,3 +236,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/comment_reps', [Comment_repliesController::class, 'store'])->name('comment_reps.store');
     Route::delete('/comment_reps/{id}', [Comment_repliesController::class, 'destroy'])->name('comment_reps.destroy');
 });
+
+
+
+// Route để nhận tin nhắn
+Route::get('/messages/{receiverId}', [MessageController::class, 'getMessages']);
+
+// Route để gửi tin nhắn
+Route::post('/messages/send', [MessageController::class, 'sendMessage']);
