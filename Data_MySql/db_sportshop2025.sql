@@ -1,9 +1,10 @@
+-- Phan Dương Quốc
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th3 15, 2025 lúc 12:23 PM
+-- Thời gian đã tạo: Th3 26, 2025 lúc 12:02 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.0.30
 
@@ -46,7 +47,9 @@ INSERT INTO `bills` (`id`, `id_customer`, `date_order`, `total`, `payment`, `not
 (1, 4, '2025-03-11', 450000, 'COD', NULL, '2025-03-11 14:53:40', '2025-03-15 10:45:08'),
 (2, 2, '2025-03-12', 600000, 'COD', NULL, '2025-03-12 12:48:49', '2025-03-12 12:48:49'),
 (3, 3, '2025-03-13', 500000, 'COD', NULL, '2025-03-13 05:38:12', '2025-03-13 05:38:12'),
-(4, 2, '2025-03-15', 650000, 'ATM', NULL, '2025-03-15 11:10:48', '2025-03-15 11:10:48');
+(4, 2, '2025-03-15', 650000, 'ATM', NULL, '2025-03-15 11:10:48', '2025-03-15 11:10:48'),
+(5, 5, '2025-03-25', 1100000, 'COD', NULL, '2025-03-25 13:00:31', '2025-03-25 13:00:31'),
+(6, 6, '2025-03-26', 1050000, 'COD', NULL, '2025-03-26 10:59:15', '2025-03-26 10:59:15');
 
 -- --------------------------------------------------------
 
@@ -72,7 +75,66 @@ INSERT INTO `bill_detail` (`id`, `id_bill`, `id_product`, `quantity`, `unit_pric
 (2, 2, 3, 1, 600000, '2025-03-12 12:48:49', '2025-03-12 12:48:49'),
 (3, 3, 2, 1, 500000, '2025-03-13 05:38:12', '2025-03-13 05:38:12'),
 (4, 1, 2, 200, 2000, '2025-03-15 10:57:03', '2025-03-15 10:57:03'),
-(5, 4, 22, 1, 650000, '2025-03-15 11:10:48', '2025-03-15 11:10:48');
+(5, 4, 22, 1, 650000, '2025-03-15 11:10:48', '2025-03-15 11:10:48'),
+(6, 5, 15, 1, 500000, '2025-03-25 13:00:31', '2025-03-25 13:00:31'),
+(7, 5, 16, 1, 600000, '2025-03-25 13:00:31', '2025-03-25 13:00:31'),
+(8, 6, 16, 1, 600000, '2025-03-26 10:59:15', '2025-03-26 10:59:15'),
+(9, 6, 17, 1, 450000, '2025-03-26 10:59:15', '2025-03-26 10:59:15');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `comments`
+--
+
+CREATE TABLE `comments` (
+  `id` int(11) NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `product_id` int(10) UNSIGNED NOT NULL,
+  `content` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `comments`
+--
+
+INSERT INTO `comments` (`id`, `user_id`, `product_id`, `content`, `created_at`, `updated_at`) VALUES
+(7, 1, 20, 'Sản phẩm rất đẹp', '2025-03-25 07:51:11', '2025-03-25 07:51:11'),
+(8, 1, 20, 'Tôi rất thích', '2025-03-25 08:30:05', '2025-03-25 08:30:05'),
+(9, 1, 15, 'Sản phẩm rất tuyệt vời', '2025-03-25 08:30:37', '2025-03-25 08:30:37'),
+(10, 1, 15, 'Tôi rát hài lòng với sản phẩm này', '2025-03-25 08:34:49', '2025-03-25 08:34:49'),
+(11, 11, 20, 'Đồ rất đẹp, tôi sẽ tiếp tục ủng hộ', '2025-03-25 10:54:30', '2025-03-25 10:54:30'),
+(13, 1, 2, 'Tôi rất thích sản phẩm này', '2025-03-25 12:32:01', '2025-03-25 12:32:01'),
+(14, 1, 15, 'Hello', '2025-03-25 12:37:54', '2025-03-25 12:37:54'),
+(15, 1, 20, 'Đồ rất đẹp và tuyệt vời', '2025-03-25 13:02:36', '2025-03-25 13:02:36');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `comment_replies`
+--
+
+CREATE TABLE `comment_replies` (
+  `id` int(11) NOT NULL,
+  `comment_id` int(11) NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `content` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `comment_replies`
+--
+
+INSERT INTO `comment_replies` (`id`, `comment_id`, `user_id`, `content`, `created_at`, `updated_at`) VALUES
+(2, 11, 1, 'Tôi đồng tình ý kiến của bạn', '2025-03-25 12:15:14', '2025-03-25 12:15:14'),
+(3, 7, 1, 'Rất hay', '2025-03-25 12:20:50', '2025-03-25 12:20:50'),
+(4, 8, 1, 'Tuyệt vời', '2025-03-25 12:22:54', '2025-03-25 12:22:54'),
+(6, 13, 4, 'Tôi cũng vậy', '2025-03-25 12:41:14', '2025-03-25 12:41:14'),
+(7, 15, 4, 'Ok', '2025-03-25 13:03:04', '2025-03-25 13:03:04');
 
 -- --------------------------------------------------------
 
@@ -101,7 +163,24 @@ INSERT INTO `customer` (`id`, `name`, `gender`, `email`, `address`, `phone_numbe
 (1, 'Phan Dương Quốc', 'nam', 'phanduongquoc111@gmail.com', 'kiên giang', '0886111620', NULL, 'qwrr', '2025-03-11 14:53:40', '2025-03-11 14:53:40'),
 (2, 'Phan Dương Quốc', 'nam', 'phanduongquoc211@gmail.com', 'kiên giang', '0886111628', NULL, 'hang đẹp', '2025-03-12 12:48:48', '2025-03-12 12:48:48'),
 (3, 'Thịnh', 'Nam', 'thinh@gmail.com', 'Bến tre', '0398298855', NULL, 'werty', '2025-03-13 05:38:12', '2025-03-15 09:39:19'),
-(4, 'Ngô Diễm Quỳnh Phương', 'Nam', 'phuongngo@gmail.com', 'Khánh Hòa', '2345677888', NULL, 'qwert', '2025-03-15 09:39:46', '2025-03-15 09:39:46');
+(4, 'Ngô Diễm Quỳnh Phương', 'Nam', 'phuongngo@gmail.com', 'Khánh Hòa', '2345677888', NULL, 'qwert', '2025-03-15 09:39:46', '2025-03-15 09:39:46'),
+(5, 'Phan Dương Quốc', 'nam', 'phanduongquoc101@gmail.com', 'kiên giang', '0886111629', NULL, 'Giao ngay', '2025-03-25 13:00:31', '2025-03-25 13:00:31'),
+(6, 'Quoc', 'nam', 'phanduong@gmail.com', 'kiên giang', '0886111628', NULL, 'rất đẹp', '2025-03-26 10:59:15', '2025-03-26 10:59:15');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `messages`
+--
+
+CREATE TABLE `messages` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sender_id` int(10) UNSIGNED NOT NULL,
+  `receiver_id` int(10) UNSIGNED NOT NULL,
+  `message` text NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -271,7 +350,8 @@ INSERT INTO `users` (`id`, `full_name`, `email`, `password`, `remember_token`, `
 (4, 'Phan Dương Quốc', 'phanduongquoc@gmail.com', '$2y$10$pAMxPehPHjq2EzbVl0eMsOGLWExiqFenlFUuX3KjPBxxCb0Bj7M6q', NULL, '2025-03-11 11:19:16', '2025-03-11 11:19:16'),
 (5, 'Phan Quốc', 'phanquoc@gmail.com', '$2y$10$As6.E6dpJHOVQRMfaiDx9uE.9xdyAGV7FzcZaPhFZR49D5zuCg5y2', NULL, '2025-03-11 11:33:12', '2025-03-11 11:33:12'),
 (6, 'quoc phan duong', 'quocphan@gmail.com', '$2y$10$R5b5zQb6JDGITWWTzu4bfu1j5KkufkVSVb3bgAi03wSLBoF723hke', NULL, '2025-03-11 11:43:56', '2025-03-14 08:27:03'),
-(7, 'Phan Duong Quoc', 'quocphan111@gmail.com', '$2y$10$sNx1BOEiURpas2J/a1mV1./Q/quxIYKn2Qn9THeBH8XUWQ7fEN1VG', NULL, '2025-03-12 12:22:57', '2025-03-12 12:22:57');
+(7, 'Phan Duong Quoc', 'quocphan111@gmail.com', '$2y$10$sNx1BOEiURpas2J/a1mV1./Q/quxIYKn2Qn9THeBH8XUWQ7fEN1VG', NULL, '2025-03-12 12:22:57', '2025-03-12 12:22:57'),
+(11, 'nguyen van a', 'nguyenvanA@gmail.com', '$2y$10$eXH35jS.6qQBl13z4EadX.OTwnsxt6BgmTJLKExP4LKwduf8Fc0dG', NULL, '2025-03-25 10:53:56', '2025-03-25 10:53:56');
 
 -- --------------------------------------------------------
 
@@ -289,7 +369,8 @@ CREATE TABLE `user_roles` (
 --
 
 INSERT INTO `user_roles` (`user_id`, `role_id`) VALUES
-(1, 1);
+(1, 1),
+(11, 2);
 
 -- --------------------------------------------------------
 
@@ -335,10 +416,34 @@ ALTER TABLE `bill_detail`
   ADD KEY `id_product` (`id_product`);
 
 --
+-- Chỉ mục cho bảng `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Chỉ mục cho bảng `comment_replies`
+--
+ALTER TABLE `comment_replies`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `comment_id` (`comment_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Chỉ mục cho bảng `customer`
 --
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `sender_id` (`sender_id`),
+  ADD KEY `receiver_id` (`receiver_id`);
 
 --
 -- Chỉ mục cho bảng `news`
@@ -400,19 +505,37 @@ ALTER TABLE `videos`
 -- AUTO_INCREMENT cho bảng `bills`
 --
 ALTER TABLE `bills`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT cho bảng `bill_detail`
 --
 ALTER TABLE `bill_detail`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT cho bảng `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT cho bảng `comment_replies`
+--
+ALTER TABLE `comment_replies`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT cho bảng `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT cho bảng `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT cho bảng `news`
@@ -448,7 +571,7 @@ ALTER TABLE `type_products`
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT cho bảng `videos`
@@ -472,6 +595,27 @@ ALTER TABLE `bills`
 ALTER TABLE `bill_detail`
   ADD CONSTRAINT `bill_detail_ibfk_1` FOREIGN KEY (`id_bill`) REFERENCES `bills` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `bill_detail_ibfk_2` FOREIGN KEY (`id_product`) REFERENCES `products` (`id`) ON DELETE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `comments`
+--
+ALTER TABLE `comments`
+  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `comment_replies`
+--
+ALTER TABLE `comment_replies`
+  ADD CONSTRAINT `comment_replies_ibfk_1` FOREIGN KEY (`comment_id`) REFERENCES `comments` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `comment_replies_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `messages`
+--
+ALTER TABLE `messages`
+  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `products`
