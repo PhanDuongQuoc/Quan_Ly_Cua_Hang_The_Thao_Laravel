@@ -5360,7 +5360,8 @@ border:none;}
 
 
 .chat button {
-    width: 30px;
+    width: 65px;
+    height: 30px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -5375,14 +5376,7 @@ border:none;}
 .chat button[onclick="sendMessage()"] {
     background: #28a745;
     color: white;
-    margin-left: 5px;
+    margin-left: 10px;
     border: 1px solid white;
 
-}
-
-.chat button[onclick="closeChat()"] {
-    background: rgb(208, 32, 32);
-    color: white;
-    margin-left: 5px;
-    border: 1px solid white;
 }

@@ -1,6 +1,6 @@
 <div class="contact-widget d-flex flex-column align-items-end gap-3">
 
-    <button onclick="openChat()" class="btn btn-circle">
+    <button onclick="toggleChat()" class="btn btn-circle">
         <img src="https://cdn-icons-png.flaticon.com/512/5676/5676829.png" alt="Chat">
     </button>
     <button class="btn btn-circle">

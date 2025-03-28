@@ -39,7 +39,7 @@
         <br>
         <input type="text" id="message-input" placeholder="Nhập tin nhắn...">
         <button onclick="sendMessage()">Gửi</button>
-        <button onclick="closeChat()">Đóng</button>
+        <button onclick="toggleChat()">Đóng</button>
     </div>
 </div>
 
@@ -63,26 +63,24 @@
 	<!--customjs-->
 	<script src="source/assets/dest/js/custom2.js"></script>
 	<script>
-		$(document).ready(function() {    
+		$(document).ready(function($) {    
 			$(window).scroll(function(){
-				if($(this).scrollTop() > 150){
-					$(".header-bottom").addClass('fixNav');
-				} else {
-					$(".header-bottom").removeClass('fixNav');
-				}
-			});
+				if($(this).scrollTop()>150){
+				$(".header-bottom").addClass('fixNav')
+				}else{
+					$(".header-bottom").removeClass('fixNav')
+				}}
+			)
 		});
 
 		let receiverId = null;
-
-		function openChat(id) {
-			receiverId = id;
-			document.getElementById('chat-box').style.display = 'block';
-			loadMessages();
-		}
-
-		function closeChat() {
-			document.getElementById('chat-box').style.display = 'none';
+		function toggleChat() {
+			var chatBox = document.getElementById("chat-box");
+			if (chatBox.style.display === "none") {
+				chatBox.style.display = "block";
+			} else {
+				chatBox.style.display = "none";
+			}
 		}
 
 		async function loadMessages() {
