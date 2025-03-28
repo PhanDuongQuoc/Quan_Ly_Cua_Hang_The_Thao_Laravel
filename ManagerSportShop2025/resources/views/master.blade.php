@@ -39,7 +39,6 @@
         <br>
         <input type="text" id="message-input" placeholder="Nhập tin nhắn...">
         <button onclick="sendMessage()">Gửi</button>
-        <button onclick="toggleChat()">Đóng</button>
     </div>
 </div>
 
