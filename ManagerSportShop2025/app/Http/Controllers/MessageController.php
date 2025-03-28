@@ -5,10 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 
 class MessageController extends Controller
 {
+    public function getMessages()
+    {
+        $messages = Message::orderBy('created_at', 'asc')->get();
+
+        return response()->json(['messages' => $messages]);
+    }
     public function index($receiverId)
     {
         $messages = Message::where(function ($query) use ($receiverId) {
@@ -22,7 +27,7 @@ class MessageController extends Controller
             ->orderBy('created_at', 'asc')
             ->get();
     
-        return view('master', ['messages' => $messages, 'receiverId' => $receiverId]);
+        return response()->json($messages);
     }
     
     public function sendMessage(Request $request)
@@ -38,8 +43,7 @@ class MessageController extends Controller
             'message' => $request->message
         ]);
     
- 
-        return redirect()->route('chat', ['receiverId' => $request->receiver_id])->with('message', $message);
+        return response()->json(['success' => true, 'message' => $message]);
     }
     
 }

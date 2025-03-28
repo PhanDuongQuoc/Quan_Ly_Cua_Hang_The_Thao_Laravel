@@ -29,19 +29,7 @@
 	</div> <!-- .container -->
     @include('footer')
 	@include('contact')
-
-	<div id="chat-box">
-    <h4>Hỗ trợ khách hàng</h4>
-    <div class="chat">
-        <div id="messages">
-            
-        </div>
-        <br>
-        <input type="text" id="message-input" placeholder="Nhập tin nhắn...">
-        <button onclick="sendMessage()">Gửi</button>
-    </div>
-</div>
-
+	@include('chat')
 
 
 
@@ -61,59 +49,29 @@
 	<script src="source/assets/dest/js/wow.min.js"></script>
 	<!--customjs-->
 	<script src="source/assets/dest/js/custom2.js"></script>
-	<script>
-		$(document).ready(function($) {    
-			$(window).scroll(function(){
-				if($(this).scrollTop()>150){
-				$(".header-bottom").addClass('fixNav')
-				}else{
-					$(".header-bottom").removeClass('fixNav')
-				}}
-			)
-		});
-
-		let receiverId = null;
-		function toggleChat() {
-			var chatBox = document.getElementById("chat-box");
-			if (chatBox.style.display === "none") {
-				chatBox.style.display = "block";
-			} else {
-				chatBox.style.display = "none";
-			}
-		}
-
-		async function loadMessages() {
-		if (!receiverId) {
-			console.error("Không có receiverId, không thể tải tin nhắn!");
-			return;
-		}
-
-		try {
-			let response = await fetch(`/messages/${receiverId}`, { method: "GET" });
-
-			if (!response.ok) {
-				throw new Error(`Lỗi HTTP: ${response.status}`);
-			}
-
-			let messages = await response.json();
-			let messageBox = document.getElementById("messages");
-			messageBox.innerHTML = ""; // Xóa nội dung cũ trước khi load mới
-
-			messages.forEach(msg => {
-				let messageDiv = document.createElement("div");
-				messageDiv.classList.add(msg.sender_id == receiverId ? "user-message" : "admin-message");
-				messageDiv.textContent = msg.message;
-				messageBox.appendChild(messageDiv);
+		<script>
+			$(document).ready(function($) {    
+				$(window).scroll(function(){
+					if($(this).scrollTop()>150){
+					$(".header-bottom").addClass('fixNav')
+					}else{
+						$(".header-bottom").removeClass('fixNav')
+					}}
+				)
 			});
 
-			messageBox.scrollTop = messageBox.scrollHeight;
-		} catch (error) {
-			console.error("Lỗi khi tải tin nhắn:", error);
-		}
-	}
+			function toggleChat() {
+				var chatBox = document.getElementById("chat-box");
+				if (chatBox.style.display === "none") {
+					chatBox.style.display = "block";
+				} else {
+					chatBox.style.display = "none";
+				}
+			}
 
-	
 
-	</script>
+		
+
+		</script>
 </body>
 </html>

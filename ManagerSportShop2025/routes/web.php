@@ -239,8 +239,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-// Route để nhận tin nhắn
-Route::get('/messages/{receiverId}', [MessageController::class, 'getMessages']);
 
-// Route để gửi tin nhắn
-Route::post('/messages/send', [MessageController::class, 'sendMessage']);
+Route::get('/messages/{receiverId}', [MessageController::class, 'index'])->name('messages.index');
+Route::post('/messages/send', [MessageController::class, 'sendMessage'])->name('messages.send');
+Route::get('/messages/get', [MessageController::class, 'getMessages'])->name('messages.get');

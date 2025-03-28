@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Session;
 use App\Models\typeproduct;
 use App\Models\cart;
-
+use App\Models\Message;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -26,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+      
         view()->composer('header',function($view){
             $loai_sp = typeproduct::all();
            
@@ -47,7 +48,10 @@ class AppServiceProvider extends ServiceProvider
                 };
             });
            
-        
+            view()->composer('chat', function ($view) {
+                $messages = Message::all();
+                $view->with('messages', $messages);
+            });
        
 
        
