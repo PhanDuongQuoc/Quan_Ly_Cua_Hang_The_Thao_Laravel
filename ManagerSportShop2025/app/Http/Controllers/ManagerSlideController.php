@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Slide;
+use App\Models\slide;
 
 class ManagerSlideController extends Controller {
     public function listSlide() {
-        $slides = Slide::paginate(5);
+        $slides = slide::paginate(5);
         return view('page.manager_slides', compact('slides'));
     }
 
@@ -21,7 +21,7 @@ class ManagerSlideController extends Controller {
             'link' => 'nullable|url',
         ]);
 
-        Slide::create([
+        slide::create([
             'image' => $request->image,
             'link' => $request->link,
         ]);
@@ -30,7 +30,7 @@ class ManagerSlideController extends Controller {
     }
 
     public function edit($id) {
-        $slide = Slide::findOrFail($id);
+        $slide = slide::findOrFail($id);
         return view('page.manager_slide_edit', compact('slide'));
     }
 
@@ -40,7 +40,7 @@ class ManagerSlideController extends Controller {
             'link' => 'nullable|url',
         ]);
 
-        $slide = Slide::findOrFail($id);
+        $slide = slide::findOrFail($id);
         $slide->update([
             'image' => $request->image,
             'link' => $request->link,
@@ -50,7 +50,7 @@ class ManagerSlideController extends Controller {
     }
 
     public function destroy($id) {
-        $slide = Slide::findOrFail($id);
+        $slide = slide::findOrFail($id);
         $slide->delete();
 
         return redirect()->route('manager_slides')->with('success', 'Xóa slide thành công!');
