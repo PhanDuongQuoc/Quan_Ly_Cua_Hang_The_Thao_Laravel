@@ -56,41 +56,46 @@ class ManagerUserRoleController extends Controller
         return view('page.manager_user_roles_edit', compact('userRole', 'users', 'roles'));
     }
 
-
-
     public function update(Request $req, $user_id, $role_id)
     {
+        // Validate dữ liệu đầu vào
         $req->validate([
-            'user_id' => 'required|string|max:255',
-            'role_id' => 'required|exists:roles,id',
+            'user_id' => 'required|integer|exists:users,id',
+            'role_id' => 'required|integer|exists:roles,id',
         ]);
     
+        // Tìm bản ghi cần cập nhật
         $userRole = UserRole::where('user_id', $user_id)->where('role_id', $role_id)->first();
     
         if (!$userRole) {
             return redirect()->route('manager_role_users')->with('error', 'Không tìm thấy dữ liệu để cập nhật!');
         }
     
+        // Kiểm tra xem người dùng đã có vai trò mới chưa
         if (UserRole::where('user_id', $req->user_id)->where('role_id', $req->role_id)->exists()) {
             return redirect()->route('manager_role_users')->with('error', 'Người dùng này đã có vai trò này!');
         }
     
-        $userRole->delete();
+        try {
+            // Gọi hàm destroy để xóa bản ghi cũ
+            $this->destroy($user_id, $role_id);
     
-        UserRole::create([
-            'user_id' => $req->user_id,
-            'role_id' => $req->role_id,
-        ]);
+            // Thêm vai trò mới
+            UserRole::create([
+                'user_id' => $req->user_id,
+                'role_id' => $req->role_id,
+            ]);
     
-        return redirect()->route('manager_role_users')->with('success', 'Cập nhật người dùng thành công!');
+            return redirect()->route('manager_role_users')->with('success', 'Cập nhật người dùng thành công!');
+        } catch (\Exception $e) {
+            return redirect()->route('manager_role_users')->with('error', 'Đã xảy ra lỗi khi cập nhật: ' . $e->getMessage());
+        }
     }
     
 
 
-
     public function destroy($user_id, $role_id)
     {
-        // Tìm dữ liệu cần xóa
         $userRole = UserRole::where('user_id', $user_id)
                             ->where('role_id', $role_id)
                             ->first();
