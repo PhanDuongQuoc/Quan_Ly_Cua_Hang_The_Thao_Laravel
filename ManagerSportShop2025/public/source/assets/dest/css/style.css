@@ -5380,3 +5380,65 @@ border:none;}
     border: 1px solid white;
 
 }
+
+
+.dropdown-menu {
+    min-width: 220px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item i {
+    margin-right: 8px;
+    color: #007bff;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+
+
+.suggested-product-card {
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+.suggested-product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.suggested-product-image {
+    height: 200px;
+    object-fit: cover;
+}
+
+.suggested-card-body {
+    text-align: center;
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.card-text {
+    font-size: 1.2rem;
+    color: #e74c3c;
+}
+
+.btn-outline-primary {
+    border-radius: 20px;
+    font-weight: bold;
+    padding: 10px 15px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background-color: #3498db;
+    color: white;
+}

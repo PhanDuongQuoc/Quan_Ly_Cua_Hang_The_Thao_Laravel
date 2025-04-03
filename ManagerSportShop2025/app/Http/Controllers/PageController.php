@@ -13,6 +13,9 @@ use App\Models\news;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\cart;
+use Illuminate\Support\Facades\Auth;
+use App\Models\viewedproduct;
+use Illuminate\Support\Facades\DB;
 
 class PageController extends Controller
 {
@@ -20,7 +23,44 @@ class PageController extends Controller
         $slide = slide::all();
         $product = product::paginate(8);
         $new_product = product::where('new','new')->get();
-        return view('page.trangchu',compact('slide','new_product','product'));
+
+
+         // 1. Lấy danh sách sản phẩm được yêu thích nhiều nhất
+         $wishlistProducts = DB::table('wishlists')
+         ->select('product_id', DB::raw('COUNT(*) as count'))
+         ->groupBy('product_id')
+         ->orderByDesc('count')
+         ->limit(5)
+         ->get();
+
+        // 2. Lấy danh sách sản phẩm được xem nhiều nhất
+        $viewedProducts = DB::table('viewed_products')
+            ->select('product_id', DB::raw('COUNT(*) as count'))
+            ->groupBy('product_id')
+            ->orderByDesc('count')
+            ->limit(5)
+            ->get();
+
+        // 3. Lấy danh sách sản phẩm bán chạy nhất
+        $bestsellerProducts = DB::table('bill_detail')
+        ->select('id_product as product_id', DB::raw('SUM(quantity) as total_sold')) // Đổi id_product thành product_id
+        ->groupBy('id_product')
+        ->orderByDesc('total_sold')
+        ->limit(5)
+        ->get();
+
+        // Hợp nhất kết quả, loại bỏ trùng lặp
+        $recommendedProductIds = collect($wishlistProducts)
+            ->merge($viewedProducts)
+            ->merge($bestsellerProducts)
+            ->unique('product_id')
+            ->pluck('product_id');
+
+        // Truy vấn thông tin chi tiết sản phẩm từ bảng `products`
+        $recommendedProducts = DB::table('products')
+            ->whereIn('id', $recommendedProductIds)
+            ->get();
+        return view('page.trangchu',compact('slide','new_product','product','recommendedProducts'));
     }
 
     public function getSanPham(){
@@ -37,14 +77,35 @@ class PageController extends Controller
     }
 
 
-    public function  getChiTietSanpham(Request $req){
-        $product = product::where('id', $req->id)->first();
-        $product_relate = product::where('id_type', $product->id_type)
-                         ->where('id', '<>', $product->id)
-                         ->paginate(3,['*'],'product_new');
-        $product_best = product::take(4)->get();
-        $product_new = product::where('new','new') -> paginate(4,['*'],'product_relate');
-        return view('page.chitietsanpham',compact('product','product_relate','product_best','product_new'));
+    public function getChiTietSanpham(Request $req)
+    {
+        $product = Product::where('id', $req->id)->first();
+    
+        if (!$product) {
+            return redirect()->back()->with('error', 'Sản phẩm không tồn tại.');
+        }
+    
+        if (Auth::check()) {
+            $userId = Auth::id();
+            $exists = viewedproduct::where('user_id', $userId)
+                                   ->where('product_id', $product->id)
+                                   ->exists();
+    
+            if (!$exists) {
+                viewedproduct::create([
+                    'user_id' => $userId,
+                    'product_id' => $product->id,
+                ]);
+            }
+        }
+    
+        $product_relate = Product::where('id_type', $product->id_type)
+                                 ->where('id', '<>', $product->id)
+                                 ->paginate(3, ['*'], 'product_new');
+        $product_best = Product::take(4)->get();
+        $product_new = Product::where('new', 'new')->paginate(4, ['*'], 'product_relate');
+    
+        return view('page.chitietsanpham', compact('product', 'product_relate', 'product_best', 'product_new'));
     }
 
     public function  getLienHe(){
@@ -94,9 +155,9 @@ class PageController extends Controller
     public function getCheckout() {
         if (Session::has('cart')) {
             $cart = Session::get('cart')?Session::get('cart'):null;
-            $product_cart = $cart->items; // Lấy danh sách sản phẩm trong giỏ hàng
+            $product_cart = $cart->items; 
         } else {
-            $product_cart = []; // Nếu không có giỏ hàng, đặt mảng rỗng
+            $product_cart = []; 
         }
     
         return view('page.dat_hang', compact('product_cart'));

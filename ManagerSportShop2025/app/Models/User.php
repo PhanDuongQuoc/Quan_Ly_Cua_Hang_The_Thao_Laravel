@@ -19,14 +19,17 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    // Một user có thể có nhiều quyền
+  
     public function roles()
     {
-        return $this->belongsToMany(Role::class, 'user_roles'); // Đổi tên bảng trung gian
+        return $this->belongsToMany(Role::class, 'user_roles'); 
     }
     
 
     public function hasRole($roleName) {
         return $this->roles()->where('name', $roleName)->exists();
     }
+
+
+    
 }

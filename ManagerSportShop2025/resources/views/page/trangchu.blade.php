@@ -65,7 +65,7 @@
 								@endforeach
 							</div>
 							<div class="space40">&nbsp;</div>
-						</div> <!-- .beta-products-list -->
+						</div> <!-- .beta-products-list -->	
 
 						<div class="space50">&nbsp;</div>
 
@@ -112,6 +112,35 @@
 	</div> <!-- #content -->
 
 	
+	<div class="container my-5">
+    <h2 class="text-center mb-4">Gợi ý sản phẩm</h2>
+	<br>
+    <div class="row">
+        @foreach ($recommendedProducts as $product)
+		<br>
+            <div class="col-md-3 mb-4">
+                <div class="card suggested-product-card shadow-lg rounded">
+                    <img src="{{$product->image}}" 
+                         class="card-img-top suggested-product-image rounded-top" 
+                         alt="{{ $product->name }}">
+                    <div class="card-body suggested-card-body">
+                        <h5 class="card-title text-center">{{ $product->name }}</h5>
+                        <p class="card-text text-danger fw-bold text-center">
+                            {{ number_format($product->unit_price, 0, ',', '.') }} VND
+                        </p>
+                        <a href="{{ route('chi-tiet-san-pham', $product->id) }}" 
+                           class="btn btn-outline-primary w-100">
+                            Xem chi tiết
+                        </a>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>
+
+
+
 
  
 @endsection

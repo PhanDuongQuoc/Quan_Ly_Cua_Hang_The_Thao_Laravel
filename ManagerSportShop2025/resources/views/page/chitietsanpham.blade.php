@@ -52,6 +52,15 @@
 								<a class="add-to-cart"  href="{{route('add-to-cart',$product->id)}}"><i class="fa fa-shopping-cart"></i></a>
 								<div class="clearfix"></div>
 							</div>
+							<br>
+							<form action="{{ route('wishlist.add', $product->id) }}" method="POST">
+								@csrf
+								<button type="submit" class="btn btn-danger">
+									❤️ Thêm vào yêu thích
+								</button>
+							</form>
+
+
 						</div>
 					</div>
 
@@ -60,6 +69,7 @@
 						<ul class="tabs">
 							<li><a href="#tab-description">Mô tả</a></li>
 							<li><a href="#tab-reviews">Bình luận ({{count($product->comments)}})</a></li>
+						
 						</ul>
 						
 
@@ -267,6 +277,9 @@
             });
         });
     });
+
+
+
 </script>
 
 

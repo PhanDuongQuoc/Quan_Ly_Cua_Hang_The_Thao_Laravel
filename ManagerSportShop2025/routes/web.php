@@ -19,6 +19,9 @@ use App\Http\Controllers\ManagerBillStatisticsController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Comment_repliesController;
 use App\Http\Controllers\HistoryOrderController;
+use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\ViewedProductController;
+use App\Http\Controllers\ProductRecommendationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +41,7 @@ Route::get('/', function () {
 
 Route::get('/trangchu', 
 [PageController::class, 'getIndex'])->name('trang-chu');
+
 
 
 
@@ -243,3 +247,26 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/messages/{receiverId}', [MessageController::class, 'index'])->name('messages.index');
 Route::post('/messages/send', [MessageController::class, 'sendMessage'])->name('messages.send');
 Route::get('/messages/get', [MessageController::class, 'getMessages'])->name('messages.get');
+
+
+
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/wishlist', [WishlistController::class, 'showWishlist'])->name('wishlist.index');
+    Route::match(['get', 'post'], '/wishlist/add/{productId}', [WishlistController::class, 'addToWishlist'])->name('wishlist.add');
+    Route::delete('/wishlist/{productId}', [WishlistController::class, 'removeFromWishlist'])->name('wishlist.remove');
+});
+
+
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/products/viewed', [ViewedProductController::class, 'index'])->name('products.viewed');
+    Route::delete('/products/viewed/{id}', [ViewedProductController::class, 'destroy'])->name('products.viewed.destroy');
+    Route::delete('/products/viewed/clear', [ViewedProductController::class, 'clearHistory'])->name('products.viewed.clear');
+});
+
+
+
+

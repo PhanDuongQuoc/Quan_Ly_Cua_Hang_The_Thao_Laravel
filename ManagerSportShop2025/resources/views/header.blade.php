@@ -21,11 +21,13 @@
 								<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
 									@csrf
 								</form>
+								
 							</li>
 
 						@else
 							<li><a href="{{ route('register') }}">Đăng ký</a></li>
 							<li><a href="{{ route('login') }}">Đăng nhập</a></li>
+							
 						@endif
 					</ul>
 				</div>
@@ -125,9 +127,19 @@
 						<li><a href="{{ route('gioi-thieu') }}">Giới thiệu</a></li>
 						<li><a href="{{ route('lien-he') }}">Liên hệ</a></li>
 						<li><a href="{{ route('video') }}">Video</a></li>
-						@if(Auth::check())
-						<li><a href="{{ route('historyorder') }}">Lịch sử mua hàng</a></li>
-						@endif
+						<li class="nav-item dropdown">
+							@if(Auth::check())
+								<button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+									⚙ Cài đặt tài khoản
+								</button>
+								<ul class="dropdown-menu dropdown-menu-end">
+									<li><a class="dropdown-item" href="{{ route('historyorder') }}"><i class="bi bi-clock-history"></i> Lịch sử mua hàng</a></li>
+									<li><a class="dropdown-item" href="{{ route('wishlist.index') }}"><i class="bi bi-heart"></i> Sản phẩm yêu thích</a></li>
+									<li><a class="dropdown-item" href="{{ route('products.viewed') }}"><i class="bi bi-eye"></i> Sản phẩm đã xem</a></li>
+								</ul>
+							@endif
+						</li>
+
 					</ul>
 					<div class="clearfix"></div>
 				</nav>
