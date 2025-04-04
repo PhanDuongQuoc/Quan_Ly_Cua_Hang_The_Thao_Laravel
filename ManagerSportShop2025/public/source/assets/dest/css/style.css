@@ -5442,3 +5442,11 @@ border:none;}
     background-color: #3498db;
     color: white;
 }
+
+
+.main-menu i {
+    font-size: 1.2rem; /* Tăng kích thước icon */
+    color: white; /* Đổi màu icon thành trắng */
+    margin-right: 6px;
+    vertical-align: middle;
+}

@@ -116,29 +116,40 @@
 				<div class="visible-xs clearfix"></div>
 				<nav class="main-menu">
 					<ul class="l-inline ov">
-						<li><a href="{{ route('trang-chu') }}">Trang chủ</a></li>
-						<li><a href="{{ route('san-pham')}}">Sản phẩm</a>
-							<ul class="sub-menu">
-								@foreach($danh_sach_loai_sp as $dsl)
-									<li><a href="{{ route('san-pham-theo-loai', $dsl->id) }}">{{$dsl -> name}}</a></li>
-								@endforeach
-							</ul>
+					<li>
+						<a href="{{ route('trang-chu') }}">
+							<i class="bi bi-house-door"></i> Trang chủ
+						</a>
+					</li>
+
+					<li>
+						<a href="{{ route('san-pham') }}">
+							<i class="bi bi-box-seam"></i> Sản phẩm
+						</a>
+						<ul class="sub-menu">
+							@foreach($danh_sach_loai_sp as $dsl)
+								<li><a href="{{ route('san-pham-theo-loai', $dsl->id) }}">{{ $dsl->name }}</a></li>
+							@endforeach
+						</ul>
+					</li>
+
+						<li><a href="{{ route('gioi-thieu') }}"><i class="bi bi-info-circle"></i> Giới thiệu</a></li>
+						<li><a href="{{ route('lien-he') }}"><i class="bi bi-telephone"></i> Liên hệ</a></li>
+						<li><a href="{{ route('video') }}"><i class="bi bi-play-circle"></i> Video</a></li>
+						<li>
+								@if(Auth::check())
+								<a >
+									<i class="bi bi-gear"></i> Cài đặt tài khoản
+								</a>
+									<ul class="sub-menu">
+								
+										<li><a  href="{{ route('historyorder') }}"><i class="bi bi-clock-history"></i> Lịch sử mua hàng</a></li>
+										<li><a  href="{{ route('wishlist.index') }}"><i class="bi bi-heart"></i> Sản phẩm yêu thích</a></li>
+										<li><a  href="{{ route('products.viewed') }}"><i class="bi bi-eye"></i> Sản phẩm đã xem</a></li>
+									</ul>
+								@endif
 						</li>
-						<li><a href="{{ route('gioi-thieu') }}">Giới thiệu</a></li>
-						<li><a href="{{ route('lien-he') }}">Liên hệ</a></li>
-						<li><a href="{{ route('video') }}">Video</a></li>
-						<li class="nav-item dropdown">
-							@if(Auth::check())
-								<button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-									⚙ Cài đặt tài khoản
-								</button>
-								<ul class="dropdown-menu dropdown-menu-end">
-									<li><a class="dropdown-item" href="{{ route('historyorder') }}"><i class="bi bi-clock-history"></i> Lịch sử mua hàng</a></li>
-									<li><a class="dropdown-item" href="{{ route('wishlist.index') }}"><i class="bi bi-heart"></i> Sản phẩm yêu thích</a></li>
-									<li><a class="dropdown-item" href="{{ route('products.viewed') }}"><i class="bi bi-eye"></i> Sản phẩm đã xem</a></li>
-								</ul>
-							@endif
-						</li>
+
 
 					</ul>
 					<div class="clearfix"></div>
@@ -148,6 +159,7 @@
 	</div> <!-- #header -->
 
 
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
 
 	
