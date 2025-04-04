@@ -56,8 +56,9 @@
 							<form action="{{ route('wishlist.add', $product->id) }}" method="POST">
 								@csrf
 								<button type="submit" class="btn btn-danger">
-									❤️ Thêm vào yêu thích
+									<i class="bi bi-heart"></i> Thêm vào yêu thích
 								</button>
+
 							</form>
 
 
